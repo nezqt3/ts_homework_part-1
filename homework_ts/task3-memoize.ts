@@ -47,7 +47,7 @@ const obj: Obj = {
 const memoAdd = memoize(slowAdd);
 memoAdd(1, 2); // возвращает 3
 memoAdd(1, 2); // из кэша, возвращает 3
-obj.memoAdd = memoize(obj.add);
+obj.memoAdd = memoize(obj.add.bind(obj));
 
 if (obj.memoAdd) {
   console.log(obj.memoAdd(5));

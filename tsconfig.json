@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
+    "strict": true,
+    "module": "commonjs",
+    "rootDir": "./homework_ts",
+    "outDir": "./types_declarations",
+    "declaration": false,
+    "esModuleInterop": true
+  },
+  "include": ["homework_ts/**/*.ts"]
+}
