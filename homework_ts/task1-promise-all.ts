@@ -34,7 +34,7 @@ function promiseAll<T>(promises: Array<Promise<T>>): Promise<T[]> {
   });
 }
 
-const p1 = Promise.resolve(1);
-const p2 = Promise.resolve(2);
+const promiseFirst = Promise.resolve(1);
+const promiseSecond = Promise.resolve(2);
 
-promiseAll([p1, p2]).then(console.log); // [1, 2]
+promiseAll([promiseFirst, promiseSecond]).then(console.log); // [1, 2]

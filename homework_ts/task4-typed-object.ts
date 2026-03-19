@@ -18,8 +18,12 @@ type TypedObjectFromSchema<S extends Schema> = {
 };
 
 function typedObject<S extends Schema>(schema: S): TypedObjectFromSchema<S> {
-  const handler: ProxyHandler<any> = {
-    set(target, key: string, value) {
+  const handler: ProxyHandler<TypedObjectFromSchema<S>> = {
+    set(target, key: string, value, receiver) {
+      if (typeof key !== "string") {
+        throw new Error(`Unexpected key type: ${String(key)}`);
+      }
+
       if (!(key in schema)) {
         throw new Error(`Unexpected key: ${key}`);
       }
@@ -28,11 +32,14 @@ function typedObject<S extends Schema>(schema: S): TypedObjectFromSchema<S> {
         throw new Error(`expected: '${schema[key]}' but got '${typeof value}'`);
       }
 
-      return Reflect.set(target, key, value);
+      return Reflect.set(target, key, value, receiver);
     },
   };
 
-  return new Proxy({}, handler);
+  return new Proxy<TypedObjectFromSchema<S>>(
+    {} as TypedObjectFromSchema<S>,
+    handler,
+  );
 }
 
 const schema = {

@@ -16,8 +16,9 @@ function memoize<Args extends PrimitiveArg[], R>(
   return function (this: unknown, ...args: Args) {
     const key = JSON.stringify(args);
 
-    if (cache.has(key)) {
-      return cache.get(key)!;
+    const cached = cache.get(key);
+    if (cached !== undefined) {
+      return cached;
     }
 
     const result = fn.apply(this, args);
@@ -47,7 +48,7 @@ const obj: Obj = {
 const memoAdd = memoize(slowAdd);
 memoAdd(1, 2); // возвращает 3
 memoAdd(1, 2); // из кэша, возвращает 3
-obj.memoAdd = memoize(obj.add);
+obj.memoAdd = memoize(obj.add.bind(obj));
 
 if (obj.memoAdd) {
   console.log(obj.memoAdd(5));
